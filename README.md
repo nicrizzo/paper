@@ -7,6 +7,8 @@ on the touch screen.
 
 It works on iOS and Android.
 
+Here a [Simple test page](http://www.nicolarizzo.com/projects/paper/tests/simple/index.html)
+
 I tried to privilege the code performance rather than the readability...
 
 License
