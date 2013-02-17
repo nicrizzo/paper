@@ -10,7 +10,7 @@ define([
 			mathMax = Math.max,
 			mathMin = Math.min,
 			Paper = function(args){
-				this.domNode = document.getElementById(args.node);
+				this.domNode = typeof args.node === "string" ? document.getElementById(args.node) : args.node;
 				this.buildDom();
 				if(args.plugins){
 					this.loadPlugins(args.plugins);
