@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Paper.js simple test page</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name = "viewport" content = "initial-scale = 1, user-scalable=no, minimum-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" href="../../css/paper.css"/>
+    <link rel="stylesheet" href="app.css" />
+</head>
+<body>
+    <div id="toolbar" class="toolbar">
+        <button id="penbutton" class="selected">Pen</button>
+        <button id="eraserbutton">Eraser</button>
+        <span class="separator"></span>
+        <label>Stroke size: </label><select id="strokes">
+            <option selected value="1">1</option>
+            <option value="1.5">1.5</option>
+            <option value="2">2</option>
+            <option value="2.5">2.5</option>
+            <option value="3">3</option>
+            <option value="3.5">3.5</option>
+            <option value="4">4</option>
+        </select>
+        <span class="separator"></span>
+        <label>Stroke color: </label><select id="colors">
+            <option selected value="rgba(0,0,0,${opacity})">black</option>
+            <option value="rgba(255,0,0,${opacity})">red</option>
+            <option value="rgba(0,255,0,${opacity})">green</option>
+            <option value="rgba(0,0,255,${opacity})">blue</option>
+            <option value="rgba(255,100,0,${opacity})">orange</option>
+            <option value="rgba(255,100,100,${opacity})">magenta</option>
+            <option value="rgba(100,20,20,${opacity})">pink</option>
+            <option value="rgba(255,255,0,${opacity})">yellow</option>
+            <option value="rgba(150,150,150,${opacity})">grey</option>
+        </select>
+        <span class="separator"></span>
+        <label>Stroke color: </label><select id="opacity">
+            <option value=".1">0.1</option>
+            <option value=".2">0.2</option>
+            <option value=".3">0.3</option>
+            <option value=".4">0.4</option>
+            <option value=".5">0.5</option>
+            <option value=".6">0.6</option>
+            <option value=".7">0.7</option>
+            <option value=".8">0.8</option>
+            <option value=".9">0.9</option>
+            <option selected value="1">1.0</option>
+        </select>
+    </div>
+    <div id="paper"></div>
+
+    <script>
+        var require = {
+            paths: {
+                "paper": "../../src/"
+            }
+        }
+    </script>
+    <script data-main="app.js" src="../../src/require.js"></script>
+</body>
+</html>

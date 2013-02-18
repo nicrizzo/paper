@@ -11,6 +11,7 @@ define([
 			mathMin = Math.min,
 			Paper = function(args){
 				this.domNode = typeof args.node === "string" ? document.getElementById(args.node) : args.node;
+				this.activeStyle = {};
 				this.buildDom();
 				if(args.plugins){
 					this.loadPlugins(args.plugins);
@@ -32,6 +33,7 @@ define([
 		_touchmoveListener: null,
 		_touchendListener: null,
 		_drawingTool: "pen",
+		activeStyle: null,
 		plugins: null,
 		undoManager: null,
 		canvas: null,
@@ -43,6 +45,7 @@ define([
 		buildDom: function(){
 			var cs;
 			this.domNode.className = this.domNode.className ? this.domNode.className + " blocknotes" : "blocknotes";
+
 			// main buffer
 			this.domNode.appendChild(this.canvas = document.createElement("canvas"));
 			this.canvas.className = "paper";
@@ -55,22 +58,18 @@ define([
 			this.canvas.style.height = this._buffer.style.height = (this.height = this.canvas.height = this._buffer.height = parseInt(cs.height)) + "px";
 			this.canvas.style.width = this._buffer.style.width = (this.width = this.canvas.width = this._buffer.width = parseInt(cs.width)) + "px";
 			this.context = this.canvas.getContext("2d")
-//			this.undoManager.pushState(this.context.getImageData(0, 0, this.width, this.height));
 			this._buffercontext = this._buffer.getContext("2d");
-//			this.context.lineJoin = "round";
 			this.strokes = {};
 
-			// todo: parametrize
-//			this.context.fillStyle = "black";
-//			this.context.lineWidth = 3;
-//			this.context.lineCap = "round";
-//			this.context.lineJoin = "round";
-//			this.context.shadowOffsetX = 0;
-//			this.context.shadowOffsetY = 0;
-//			this.context.shadowBlur = 2;
-			// doesn't work well on chrome / android
-//			this.context.shadowColor = "rgba(0,0,0,.5)";
-//			this._buffercontext.fillStyle = "red";
+			this.setStrokeAttributes({
+				strokeStyle: "black",
+				lineWidth: 1
+			})
+		},
+		setStrokeAttributes: function(attrs){
+			for(var i in attrs){
+				this.activeStyle[i] = this.context[i] = this._buffercontext[i] = attrs[i];
+			}
 		},
 		touchStartHandler: function(e){
 			var touches = e.changedTouches, strokes = this.strokes, domNode = this.domNode,
@@ -120,10 +119,8 @@ define([
 
 				// saving the current state
 				if(this._drawingTool == "pen"){ // == is faster than ===, I suppose
-//					this.commit(stroke);
 					stroke.index = 0;
 					quadraticInterpolator.run(this.context, stroke);
-
 				}else{
 					this.erase(this.context, stroke);
 				}
@@ -166,7 +163,7 @@ define([
 			interpolator.run(this._buffercontext, {
 				0: stroke
 			});
-			this._buffercontext.lineWidth = 1;
+			this._buffercontext.lineWidth = this.activeStyle.lineWidth;
 			var destData = this.context.getImageData(rect.x, rect.y, rect.w, rect.h),
 					eraseData = this._buffercontext.getImageData(rect.x, rect.y, rect.w, rect.h)
 					;

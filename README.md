@@ -11,6 +11,8 @@ Here a [Simple test page](http://www.nicolarizzo.com/projects/paper/tests/simple
 
 Eraser test [here](http://www.nicolarizzo.com/projects/paper/tests/eraser/index.html)
 
+Styles test [here](http://www.nicolarizzo.com/projects/paper/tests/styles/index.html)
+
 
 I tried to privilege the code performance rather than the readability...
 
