@@ -39,6 +39,10 @@ html, body{
 	color:#ddd;
 	background:#444;
 }
+.toolbar button:active{
+	background:#000;
+	color:#ddd;
+}
 #paper{
 	top: 40px;
 }
