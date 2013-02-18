@@ -120,7 +120,10 @@ define([
 
 				// saving the current state
 				if(this._drawingTool == "pen"){ // == is faster than ===, I suppose
-					this.commit(stroke);
+//					this.commit(stroke);
+					stroke.index = 0;
+					quadraticInterpolator.run(this.context, stroke);
+
 				}else{
 					this.erase(this.context, stroke);
 				}
@@ -186,11 +189,6 @@ define([
 		},
 		setDrawingTool: function(/** Object */ args){
 			this._drawingTool = args.type;
-		},
-		commit: function(stroke){
-			stroke.index = 0;
-			quadraticInterpolator.run(this.context, stroke);
-//			simpleLinearInterpolator.run(this.context, stroke);
 		},
 		_draw: function(){
 
