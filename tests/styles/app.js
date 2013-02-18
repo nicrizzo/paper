@@ -17,17 +17,20 @@ require([
 			this.colorselect = document.getElementById("colors");
 			this.strokeselect = document.getElementById("strokes");
 			this.opacityselect = document.getElementById("opacity");
-			this.addEventListeners();
 			this.paper = new Paper({
 				node: "paper"
 			});
+			this.addEventListeners();
+			this.paper.setStrokeAttributes({
+				strokeStyle: this.colorselect.value.replace(/\${opacity}/, this.opacityselect.value),
+				lineWidth: this.strokeselect.value
+			})
 		},
 		addEventListeners: function(){
 			var colorsCallback = function(e){
 				this.paper.setStrokeAttributes({
 					strokeStyle: this.colorselect.value.replace(/\${opacity}/, this.opacityselect.value)
 				})
-				console.log(this.colorselect.value.replace(/\${opacity}/, this.opacityselect.value))
 			};
 			this.toolbar.addEventListener("touchmove", function(e){
 				e.preventDefault();
