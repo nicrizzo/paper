@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Paper.js image test page</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name = "viewport" content = "initial-scale = 1, user-scalable=no, minimum-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" href="../../css/paper.css"/>
+    <link rel="stylesheet" href="app.css" />
+</head>
+<body>
+    <div id="toolbar" class="toolbar">
+        <button id="penbutton" class="selected">Pen</button>
+        <button id="eraserbutton">Eraser</button>
+        <span class="separator"></span>
+        <button>Image<input id='imagebutton' type='file' /></button>
+        <button id="cancelBtn" class="imgbutton">cancel</button>
+        <button id="saveBtn" class="imgbutton">save</button>
+    </div>
+    <div id="paper"></div>
+
+    <script>
+        var require = {
+            paths: {
+                "paper": "../../src/"
+            }
+        }
+    </script>
+    <script data-main="app.js" src="../../src/require.js"></script>
+</body>
+</html>

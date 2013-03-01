@@ -44,7 +44,7 @@ require([
 				this.paper.setDrawingTool({
 					type: "pen"
 				})
-			}, this))
+			}, this));
 			this.eraserbutton.addEventListener("touchstart", utils.bind(function(e){
 				var btns = document.querySelectorAll(".toolbar>button");
 				for(var i = 0; btns[i]; i++){

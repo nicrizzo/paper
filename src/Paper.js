@@ -10,6 +10,7 @@ define([
 			mathMax = Math.max,
 			mathMin = Math.min,
 			Paper = function(args){
+				this._listeners = {};
 				this.domNode = typeof args.node === "string" ? document.getElementById(args.node) : args.node;
 				this.activeStyle = {};
 				this.buildDom();
@@ -33,6 +34,7 @@ define([
 		_touchmoveListener: null,
 		_touchendListener: null,
 		_drawingTool: "pen",
+		_listeners: null,
 		activeStyle: null,
 		plugins: null,
 		undoManager: null,
@@ -65,6 +67,21 @@ define([
 				strokeStyle: "black",
 				lineWidth: 1
 			})
+		},
+		emit: function(/** String */ event){
+			var eventListeners = this._listeners[event];
+			if(!eventListeners){
+				return;
+			}
+			for(var i = 0, listener; listener = eventListeners[i]; i++){
+				listener(Array.prototype.slice.call(arguments, 1));
+			}
+		},
+		addListener: function(/** String */ event, /** Function */ handler){
+			if(!this._listeners[event]){
+				this._listeners[event] = [];
+			}
+			this._listeners[event].push(handler);
 		},
 		setStrokeAttributes: function(attrs){
 			for(var i in attrs){
@@ -132,9 +149,14 @@ define([
 			this._drawTimeout = setTimeout(this._draw, 20);
 		},
 		addEventListeners: function(){
-			this._touchstartListener = this._buffer.addEventListener("touchstart", utils.bind(this.touchStartHandler, this), false);
-			this._touchmoveListener = this._buffer.addEventListener("touchmove", utils.bind(this.touchMoveHandler, this), false);
-			this._touchendListener = this._buffer.addEventListener("touchend", utils.bind(this.touchEndHandler, this), false);
+			this._buffer.addEventListener("touchstart", this._touchstartListener = utils.bind(this.touchStartHandler, this), false);
+			this._buffer.addEventListener("touchmove", this._touchmoveListener = utils.bind(this.touchMoveHandler, this), false);
+			this._buffer.addEventListener("touchend", this._touchendListener = utils.bind(this.touchEndHandler, this), false);
+		},
+		removeEventListeners: function(){
+			this._buffer.removeEventListener("touchstart", this._touchstartListener, false);
+			this._buffer.removeEventListener("touchmove", this._touchmoveListener, false);
+			this._buffer.removeEventListener("touchend", this._touchendListener, false);
 		},
 		_findIncludingRect: function(stroke){
 			var x = stroke[0].x, y = stroke[0].y, x1 = 0, y1 = 0, w, h, i = 0, l = stroke.length, point;
