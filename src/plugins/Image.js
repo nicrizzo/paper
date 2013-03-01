@@ -47,7 +47,7 @@ define([
 			img.style.position = "absolute";
 			img.style.top = "0";
 			img.style.left = "0";
-			img.style.width = "40%";
+			img.style.width = "200px";
 			img.style.display = "block";
 			this.paper.domNode.appendChild(cover);
 			this.paper.domNode.appendChild(img);
