@@ -13,6 +13,8 @@ Eraser test [here](http://www.nicolarizzo.com/projects/paper/tests/eraser/index.
 
 Styles test [here](http://www.nicolarizzo.com/projects/paper/tests/styles/index.html)
 
+Image plugin test [here](http://www.nicolarizzo.com/projects/paper/tests/image/index.html)
+
 
 I tried to privilege the code performance rather than the readability...
 
