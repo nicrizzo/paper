@@ -35,9 +35,15 @@ require([
 			})
 		},
 		_onFileChange: function(e){
-			var files = e.target.files;
+			var files = e.target.files, paper = this.paper;
 			for(var i = 0, f; f = files[i]; i++){
-				this._reader.readAsDataURL(f);
+//				this._reader.readAsDataURL(f);
+
+				if(!paper.plugins || !paper.plugins["Image"]){
+					console.warn("Missing plugin: Image");
+					return;
+				}
+				paper.plugins["Image"].start(f);
 			}
 		},
 		_onFileLoad: function(e){
@@ -73,9 +79,9 @@ require([
 		},
 		addEventListeners: function(){
 			this.paper.addListener("image:ready", utils.bind(this.onImageReady, this));
-			if(this._reader){
-				this._reader.onload = utils.bind(this._onFileLoad, this);
-			}
+//			if(this._reader){
+//				this._reader.onload = utils.bind(this._onFileLoad, this);
+//			}
 //			this._reader && this._reader.addEventListener("load", utils.bind(this._onFileLoad, this), false);
 			this.imagebutton.addEventListener("change", utils.bind(this._onFileChange, this), false);
 //			this.imagebutton.onchange = utils.bind(this._onFileChange, this);

@@ -42,9 +42,10 @@ define([
 			return cover;
 		})(),
 		start: function(imageData){
-			var img = this.img, cover = this.cover;
+			var img = this.img, cover = this.cover, mpImg = new MegaPixImage(imageData);
+
 			cover.style.background = "transparent";
-			img.src = imageData;
+			mpImg.render(img, { maxWidth: 200, maxHeight: 200});
 			img.style.position = "absolute";
 			img.style.top = "0";
 			img.style.left = "0";
@@ -70,7 +71,7 @@ define([
 		},
 		saveImage: function(){
 			var ctx = this.paper.context,
-				img = new MegaPixImage(this.img),
+				img = this.img,
 				left = parseInt(img.style.left),
 				top = parseInt(img.style.top),
 				width = parseInt(img.width),
