@@ -1,7 +1,8 @@
 define([
 	"../modules/utils",
+	"../lib/megapix/megapix-image",
 	"../gesture"
-],function(utils){
+],function(utils, MegaPixImage){
 	var transformString = (function(){
 		return "WebkitTransform"
 	})(),
@@ -69,7 +70,7 @@ define([
 		},
 		saveImage: function(){
 			var ctx = this.paper.context,
-				img = this.img,
+				img = new MegaPixImage(this.img),
 				left = parseInt(img.style.left),
 				top = parseInt(img.style.top),
 				width = parseInt(img.width),

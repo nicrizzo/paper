@@ -73,8 +73,12 @@ require([
 		},
 		addEventListeners: function(){
 			this.paper.addListener("image:ready", utils.bind(this.onImageReady, this));
-			this._reader && this._reader.addEventListener("load", utils.bind(this._onFileLoad, this), false);
+			if(this._reader){
+				this._reader.onload = utils.bind(this._onFileLoad, this);
+			}
+//			this._reader && this._reader.addEventListener("load", utils.bind(this._onFileLoad, this), false);
 			this.imagebutton.addEventListener("change", utils.bind(this._onFileChange, this), false);
+//			this.imagebutton.onchange = utils.bind(this._onFileChange, this);
 			this.toolbar.addEventListener("touchmove", function(e){
 				e.preventDefault();
 			}, false);
