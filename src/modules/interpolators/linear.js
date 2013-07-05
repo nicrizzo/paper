@@ -1,6 +1,10 @@
 define(function(){
+	var context;
 	return {
-		run: function(context, strokes){
+		setContext: function(ctx){
+			context = ctx;
+		},
+		run: function(strokes){
 			var stroke, point;
 //			var rnd = (5*Math.random())|0;
 //			context.strokeStyle = ["red", "black", "green", "blue", "magenta"][rnd];

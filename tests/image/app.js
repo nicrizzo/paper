@@ -91,7 +91,7 @@ require([
 			this.penbutton.addEventListener("touchstart", utils.bind(function(e){
 				var btns = document.querySelectorAll(".toolbar>button");
 				for(var i = 0; btns[i]; i++){
-					btns[i].className = "";
+					btns[i].className = btns[i].className.replace(/selected/, "");
 				}
 				e.target.className = "selected";
 				this.paper.setDrawingTool({
@@ -101,7 +101,7 @@ require([
 			this.eraserbutton.addEventListener("touchstart", utils.bind(function(e){
 				var btns = document.querySelectorAll(".toolbar>button");
 				for(var i = 0; btns[i]; i++){
-					btns[i].className = "";
+					btns[i].className = btns[i].className.replace(/selected/, "");
 				}
 				e.target.className = "selected";
 				this.paper.setDrawingTool({

@@ -59,8 +59,9 @@ define([
 			cs = window.getComputedStyle(this.canvas, null);
 			this.canvas.style.height = this._buffer.style.height = (this.height = this.canvas.height = this._buffer.height = parseInt(cs.height)) + "px";
 			this.canvas.style.width = this._buffer.style.width = (this.width = this.canvas.width = this._buffer.width = parseInt(cs.width)) + "px";
-			this.context = this.canvas.getContext("2d")
+			quadraticInterpolator.setContext(this.context = this.canvas.getContext("2d"));
 			this._buffercontext = this._buffer.getContext("2d");
+			interpolator.setContext(this._buffercontext);
 			this.strokes = {};
 
 			this.setStrokeAttributes({
@@ -118,8 +119,7 @@ define([
 		},
 		touchEndHandler: function(e){
 			var changedTouches = e.changedTouches, touch, domNode = this.domNode, stroke, strokes = this.strokes,
-					ol = domNode.offsetLeft, ot = domNode.offsetTop, ctx = this._buffercontext, rect,
-					fir = this._findIncludingRect;
+					ol = domNode.offsetLeft, ot = domNode.offsetTop, ctx = this._buffercontext, rect
 			;
 			var i = changedTouches.length;
 			while(i--){
@@ -137,7 +137,7 @@ define([
 				// saving the current state
 				if(this._drawingTool == "pen"){ // == is faster than ===, I suppose
 					stroke.index = 0;
-					quadraticInterpolator.run(this.context, stroke);
+					quadraticInterpolator.run(stroke);
 				}else{
 					this.erase(this.context, stroke);
 				}
@@ -182,7 +182,7 @@ define([
 				return
 			}
 			this._buffercontext.lineWidth = 30;
-			interpolator.run(this._buffercontext, {
+			interpolator.run({
 				0: stroke
 			});
 			this._buffercontext.lineWidth = this.activeStyle.lineWidth;
@@ -213,9 +213,11 @@ define([
 
 		},
 		draw: function(){
-			interpolator.run(this._buffercontext, strokeFilter.run(this.strokes));
+			interpolator.run(strokeFilter.run(this.strokes));
 			this._drawTimeout = setTimeout(this._draw, 20);
 		}
 	};
+	var fir = Paper.prototype._findIncludingRect;
+
 	return Paper;
 });
