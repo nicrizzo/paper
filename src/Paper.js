@@ -36,6 +36,8 @@ define([
 		_drawingTool: "pen",
 		_listeners: null,
 		_isWriting: false,
+		_offsetTop: 0,
+		_offsetLeft: 0,
 		activeStyle: null,
 		plugins: null,
 		undoManager: null,
@@ -68,7 +70,9 @@ define([
 			this.setStrokeAttributes({
 				strokeStyle: "black",
 				lineWidth: 1
-			})
+			});
+			this._offsetTop = this.domNode.offsetTop;
+			this._offsetLeft = this.domNode.offsetLeft;
 		},
 		emit: function(/** String */ event){
 			var eventListeners = this._listeners[event];
@@ -92,7 +96,7 @@ define([
 		},
 		touchStartHandler: function(e){
 			var touches = e.changedTouches,
-					ol = this.domNode.offsetLeft, ot = this.domNode.offsetTop
+					ol = this._offsetLeft, ot = this._offsetTop
 					;
 			for(var i = 0, touch; touch = touches[i]; i++){
 				(this.strokes[(touch = touches[i]).identifier] = [{
@@ -106,7 +110,7 @@ define([
 		touchMoveHandler: function(e){
 			var touches = e.changedTouches, stroke,
 					domNode = this.domNode,
-					ol = domNode.offsetLeft, ot = domNode.offsetTop
+					ol = this._offsetLeft, ot = this._offsetTop
 					;
 			for(var i = 0, touch; touch = touches[i]; i++){
 				if(!(stroke = this.strokes[(touch = touches[i]).identifier])){
@@ -123,7 +127,7 @@ define([
 		},
 		touchEndHandler: function(e){
 			var changedTouches = e.changedTouches, touch, domNode = this.domNode, stroke, strokes = this.strokes,
-					ol = domNode.offsetLeft, ot = domNode.offsetTop, ctx = this._buffercontext, rect
+					ol = this._offsetLeft, ot = this._offsetTop, ctx = this._buffercontext, rect
 			;
 			var i = changedTouches.length;
 			while(i--){
