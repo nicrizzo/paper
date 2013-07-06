@@ -20,7 +20,7 @@ define([
 				this.addEventListeners();
 				this._undoData = [];
 				this._draw = utils.bind(this.draw, this);
-				this.draw();
+//				this.draw();
 				this.plugins = {};
 				this.isDebug = !!args.isDebug;
 				this.drawControlPoints = !!args.drawControlPoints;
@@ -35,6 +35,7 @@ define([
 		_touchendListener: null,
 		_drawingTool: "pen",
 		_listeners: null,
+		_isWriting: false,
 		activeStyle: null,
 		plugins: null,
 		undoManager: null,
@@ -90,31 +91,34 @@ define([
 			}
 		},
 		touchStartHandler: function(e){
-			var touches = e.changedTouches, strokes = this.strokes, domNode = this.domNode,
-					ol = domNode.offsetLeft, ot = domNode.offsetTop
+			var touches = e.changedTouches,
+					ol = this.domNode.offsetLeft, ot = this.domNode.offsetTop
 					;
 			for(var i = 0, touch; touch = touches[i]; i++){
-				(strokes[(touch = touches[i]).identifier] = [{
+				(this.strokes[(touch = touches[i]).identifier] = [{
 					x: touch.clientX - ol,
 					y: touch.clientY - ot
 				}]).index = 0;
 			}
+			this._isDrawing = true;
+			this.draw();
 		},
 		touchMoveHandler: function(e){
-			var touches = e.changedTouches, stroke, strokeLength,
-					domNode = this.domNode, strokes = this.strokes,
+			var touches = e.changedTouches, stroke,
+					domNode = this.domNode,
 					ol = domNode.offsetLeft, ot = domNode.offsetTop
 					;
 			for(var i = 0, touch; touch = touches[i]; i++){
-				if(!(stroke = strokes[(touch = touches[i]).identifier])){
+				if(!(stroke = this.strokes[(touch = touches[i]).identifier])){
 					continue;
 				}
-				strokeLength = stroke.length;
-				stroke[strokeLength] = {
+				stroke[stroke.length] = {
 					x: touch.clientX - ol,
 					y: touch.clientY - ot
 				};
 			}
+			stroke = null;
+			touch = null;
 			e.preventDefault();
 		},
 		touchEndHandler: function(e){
@@ -141,12 +145,12 @@ define([
 				}else{
 					this.erase(this.context, stroke);
 				}
-
+				this._isDrawing = false;
 			}
 			// clear buffer
-			clearTimeout(this._drawTimeout);
-			ctx.clearRect(0, 0, this._buffer.width, this._buffer.height);
-			this._drawTimeout = setTimeout(this._draw, 20);
+//			clearTimeout(this._drawTimeout);
+			this._buffer.width = this._buffer.width;
+//			this._drawTimeout = setTimeout(this._draw, 30);
 		},
 		addEventListeners: function(){
 			this._buffer.addEventListener("touchstart", this._touchstartListener = utils.bind(this.touchStartHandler, this), false);
@@ -214,7 +218,11 @@ define([
 		},
 		draw: function(){
 			interpolator.run(strokeFilter.run(this.strokes));
-			this._drawTimeout = setTimeout(this._draw, 20);
+			if(this._isDrawing){
+				this._drawTimeout = setTimeout(this._draw, 30);
+			}else{
+				clearTimeout(this._drawTimeout);
+			}
 		}
 	};
 	var fir = Paper.prototype._findIncludingRect;
