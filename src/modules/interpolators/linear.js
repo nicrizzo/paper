@@ -21,10 +21,10 @@ define(function(){
 						context.lineTo(point[0], point[1]);
 					}
 				}
-//				if(point && point.last){
-//					stroke.length = 0;
-//					delete strokes[i];
-//				}
+				if(point && point.last){
+					stroke.length = 0;
+					delete strokes[i];
+				}
 				stroke.index = ll - 1;
 			}
 			context.stroke();
