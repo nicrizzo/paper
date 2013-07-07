@@ -101,8 +101,6 @@ define([
 			}
 		},
 		touchStartHandler: function(e){
-			startTime = +new Date;
-//			console.log('start')
 			var touches = e.changedTouches,
 					ol = this._offsetLeft, ot = this._offsetTop
 					;
@@ -131,8 +129,6 @@ define([
 			stroke = null;
 			touch = null;
 			now = +new Date;
-//			console.log('elapsed: ' + (now - startTime));
-			startTime = +new Date;
 			e.preventDefault();
 		},
 		touchEndHandler: function(e){
