@@ -9,6 +9,12 @@ define([
 	var
 			mathMax = Math.max,
 			mathMin = Math.min,
+			// debug
+			startTime = 0,
+			now = 0,
+			// debug
+
+
 			Paper = function(args){
 				this._listeners = {};
 				this.domNode = typeof args.node === "string" ? document.getElementById(args.node) : args.node;
@@ -95,6 +101,8 @@ define([
 			}
 		},
 		touchStartHandler: function(e){
+			startTime = +new Date;
+//			console.log('start')
 			var touches = e.changedTouches,
 					ol = this._offsetLeft, ot = this._offsetTop
 					;
@@ -109,7 +117,6 @@ define([
 		},
 		touchMoveHandler: function(e){
 			var touches = e.changedTouches, stroke,
-					domNode = this.domNode,
 					ol = this._offsetLeft, ot = this._offsetTop
 					;
 			for(var i = 0, touch; touch = touches[i]; i++){
@@ -123,6 +130,9 @@ define([
 			}
 			stroke = null;
 			touch = null;
+			now = +new Date;
+//			console.log('elapsed: ' + (now - startTime));
+			startTime = +new Date;
 			e.preventDefault();
 		},
 		touchEndHandler: function(e){

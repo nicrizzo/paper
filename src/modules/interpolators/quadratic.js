@@ -6,7 +6,7 @@ define(function(){
 		ctx.beginPath();
 		ctx.moveTo(res[0], res[1]);
 		for(var i = 0, l = res.length; i < l; i+=4){
-			ctx.quadraticCurveTo(res[i+0], res[i+1], res[i+2], res[i+3]);
+			ctx.quadraticCurveTo(res[i], res[i+1], res[i+2], res[i+3]);
 		}
 		ctx.stroke();
 	};
@@ -15,7 +15,7 @@ define(function(){
 			ctx = context;
 		},
 		run: (function(){
-			if(!"Worker" in window){
+			if("Worker" in window){
 				worker = new Worker("../../src/modules/interpolators/_quadratic_worker.js");
 				worker.addEventListener("message", _onMessage);
 				return function(stroke){

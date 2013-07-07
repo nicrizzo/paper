@@ -5,7 +5,6 @@ onmessage = function(oEvent){
 		res[res.length] = (y = point[1]);
 		res[res.length] = ((x + (nx = (nextPoint = oEvent.data[ii + 1])[0])) >> 1);
 		res[res.length] = ((y + (ny = nextPoint[1])) >> 1);
-//		context.quadraticCurveTo(x = (point = stroke[ii]).x, y = point.y, (x + (nx = (nextPoint = stroke[ii + 1]).x)) >> 1, (y + (ny = nextPoint.y)) >> 1);
 	}
 	postMessage(res);
 }
