@@ -5,8 +5,8 @@ define(function(){
 			for(var i in strokes){
 				stroke = strokes[i];
 				if(stroke.length){
-					if((typeof minY === "undefined" || stroke[0].y <= minY) && !stroke[stroke.length-1].last){
-						minY = stroke[0].y;
+					if((typeof minY === "undefined" || stroke[0][1] <= minY) && !stroke[stroke.length-1][2]){
+						minY = stroke[0][1];
 						minStroke = stroke;
 						id = i;
 						if(oldId){

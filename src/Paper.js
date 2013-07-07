@@ -99,10 +99,10 @@ define([
 					ol = this._offsetLeft, ot = this._offsetTop
 					;
 			for(var i = 0, touch; touch = touches[i]; i++){
-				(this.strokes[(touch = touches[i]).identifier] = [{
-					x: touch.clientX - ol,
-					y: touch.clientY - ot
-				}]).index = 0;
+				(this.strokes[(touch = touches[i]).identifier] = [[
+					touch.clientX - ol,
+					touch.clientY - ot
+				]]).index = 0;
 			}
 			this._isDrawing = true;
 			this.draw();
@@ -116,10 +116,10 @@ define([
 				if(!(stroke = this.strokes[(touch = touches[i]).identifier])){
 					continue;
 				}
-				stroke[stroke.length] = {
-					x: touch.clientX - ol,
-					y: touch.clientY - ot
-				};
+				stroke[stroke.length] = [
+					touch.clientX - ol,
+					touch.clientY - ot
+				];
 			}
 			stroke = null;
 			touch = null;
@@ -135,11 +135,11 @@ define([
 					continue;
 				}
 				stroke[stroke.length] =
-				{
-					x: touch.clientX - ol,
-					y: touch.clientY - ot,
-					last: true
-				};
+				[
+					touch.clientX - ol,
+					touch.clientY - ot,
+					true // last
+				];
 				rect = fir(stroke);
 
 				// saving the current state
@@ -167,12 +167,12 @@ define([
 			this._buffer.removeEventListener("touchend", this._touchendListener, false);
 		},
 		_findIncludingRect: function(stroke){
-			var x = stroke[0].x, y = stroke[0].y, x1 = 0, y1 = 0, w, h, i = 0, l = stroke.length, point;
+			var x = stroke[0][0], y = stroke[0][1], x1 = 0, y1 = 0, w, h, i = 0, l = stroke.length, point;
 			for(; i < l; i++){
-				x = mathMin(x, (point = stroke[i]).x);
-				y = mathMin(y, point.y);
-				x1 = mathMax(x1, point.x);
-				y1 = mathMax(y1, point.y);
+				x = mathMin(x, (point = stroke[i])[0]);
+				y = mathMin(y, point[1]);
+				x1 = mathMax(x1, point[0]);
+				y1 = mathMax(y1, point[1]);
 			}
 			w = x1 - x;
 			h = y1 - y;

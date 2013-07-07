@@ -15,12 +15,12 @@ define(function(){
 			ctx = context;
 		},
 		run: (function(){
-			if("Worker" in window){
+			if(!"Worker" in window){
 				worker = new Worker("../../src/modules/interpolators/_quadratic_worker.js");
 				worker.addEventListener("message", _onMessage);
 				return function(stroke){
-					if(stroke.length == 2 && stroke[1].last){
-						ctx.fillRect(stroke[0].x, stroke[0].y, 1, 1);
+					if(stroke.length == 2 && stroke[1][2]){
+						ctx.fillRect(stroke[0][0], stroke[0][1], 1, 1);
 						return;
 					}
 					worker.postMessage(stroke);
@@ -28,14 +28,14 @@ define(function(){
 			}else{
 				return function(stroke){
 					var point, nextPoint, x, y, nx, ny;
-					if(stroke.length == 2 && stroke[1].last){
-						ctx.fillRect(stroke[0].x, stroke[0].y, 1, 1);
+					if(stroke.length == 2 && stroke[1][2]){
+						ctx.fillRect(stroke[0][0], stroke[0][1], 1, 1);
 						return;
 					}
 					ctx.beginPath();
-					ctx.moveTo(stroke[0].x, stroke[0].y);
+					ctx.moveTo(stroke[0][0], stroke[0][1]);
 					for(var ii = 0, ll = stroke.length-2; ii < ll; ii++){
-						ctx.quadraticCurveTo(x = (point = stroke[ii]).x, y = point.y, (x + (nx = (nextPoint = stroke[ii + 1]).x)) >> 1, (y + (ny = nextPoint.y)) >> 1);
+						ctx.quadraticCurveTo(x = (point = stroke[ii])[0], y = point[1], (x + (nx = (nextPoint = stroke[ii + 1])[0])) >> 1, (y + (ny = nextPoint[1])) >> 1);
 					}
 					ctx.quadraticCurveTo(x, y, nx, ny);
 					ctx.stroke();
