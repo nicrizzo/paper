@@ -2,18 +2,13 @@ define([
 	"paper/modules/strokeFilters/default",
 	"paper/modules/interpolators/linear",
 	"paper/modules/interpolators/simplelinear",
-	"paper/modules/interpolators/quadratic",
+	"paper/modules/interpolators/bezier",
 	"paper/modules/utils"
-], function(strokeFilter, interpolator, simpleLinearInterpolator, quadraticInterpolator, utils){
+], function(strokeFilter, interpolator, simpleLinearInterpolator, mainInterpolator, utils){
 
 	var
 			mathMax = Math.max,
 			mathMin = Math.min,
-			// debug
-			startTime = 0,
-			now = 0,
-			// debug
-
 
 			Paper = function(args){
 				this._listeners = {};
@@ -68,7 +63,7 @@ define([
 			cs = window.getComputedStyle(this.canvas, null);
 			this.canvas.style.height = this._buffer.style.height = (this.height = this.canvas.height = this._buffer.height = parseInt(cs.height)) + "px";
 			this.canvas.style.width = this._buffer.style.width = (this.width = this.canvas.width = this._buffer.width = parseInt(cs.width)) + "px";
-			quadraticInterpolator.setContext(this.context = this.canvas.getContext("2d"));
+			mainInterpolator.setContext(this.context = this.canvas.getContext("2d"));
 			this._buffercontext = this._buffer.getContext("2d");
 			interpolator.setContext(this._buffercontext);
 			this.strokes = {};
@@ -128,7 +123,6 @@ define([
 			}
 			stroke = null;
 			touch = null;
-			now = +new Date;
 			e.preventDefault();
 		},
 		touchEndHandler: function(e){
@@ -151,14 +145,15 @@ define([
 				// saving the current state
 				if(this._drawingTool == "pen"){ // == is faster than ===, I suppose
 					stroke.index = 0;
-					quadraticInterpolator.run(stroke);
+					mainInterpolator.run(stroke);
 				}else{
 					this.erase(this.context, stroke);
 				}
 				this._isDrawing = false;
 			}
+
 			// clear buffer
-//			clearTimeout(this._drawTimeout);
+//			!e.touches.length && (this._buffer.width = this._buffer.width);
 			this._buffer.width = this._buffer.width;
 //			this._drawTimeout = setTimeout(this._draw, 30);
 		},
